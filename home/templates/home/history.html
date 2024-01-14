@@ -1,0 +1,124 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | Dashboard
+{%endblock%}
+
+{%block nav%}
+
+<li><a href="home">Dashboard</a></li>
+<li><a href="crops">My Crops</a></li>
+<li><a href="history" class = "active">Harvest History</a></li>
+    
+    <!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
+    
+
+{%endblock%}
+{%block content%}
+
+
+<style>
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        border: 1px solid rgba(3, 85, 20, 0.42);
+        background: #E7FFEF;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 60%; /* Adjust the maximum width as needed */
+        max-height: 60%;
+        text-align: center;
+    }
+
+    .modal p{
+        text-align: center;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin: 30px;
+    }
+
+    .modal h2 {
+        color: #095833;
+        margin-top: 0;
+    }
+
+    .modal .bxs-info-circle{
+        font-size: 100px;
+        color: #095833;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    /* Icon Styles */
+    .bx {
+        cursor: pointer;
+    }
+    
+    .bxs-leaf{
+        font-size: 25px;
+        justify: center;
+        fill: #2E6841;
+        filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+</style>
+
+    <br><br><br><br>
+
+    <div class="container mt-5">
+        <div class="head-title">
+            <br><br>
+            <h1>Harvest History</h1>
+        </div>
+    </div>
+
+
+
+    <br><br><br><br>
+
+    <div class="container mt-5">
+        {% for key, value in check_data.items %}
+    <p>{{ key }}: {{ value }}</p>
+{% endfor %}
+    </div>
+    
+    
+    <footer>
+        <h1><br></h1>
+    </footer>
+    
+
+
+
+
+
+
+
+
+
+
+    {%endblock%}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

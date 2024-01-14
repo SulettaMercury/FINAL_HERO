@@ -1,0 +1,551 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | My Crops
+{%endblock%}
+
+{%block nav%}
+
+    <li><a href="home">Dashboard</a></li>
+    <li><a href="crops"  class = "active">My Crops</a></li>
+    <li><a href="history">Harvest History</a></li>
+
+
+{%endblock%}
+{%block content%}
+
+<!-- Custom CSS for the modal -->
+<style>
+    /* Style the modal background overlay */
+    .custom-modal {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: none;
+        z-index: 1000;
+    }
+
+    /* Style the modal content */
+    .modal-content {
+        position: relative;
+        display: flex;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(3.5px);
+        width: 80%;
+        max-width: 600px;
+        height: fit-content;
+        margin: 0 auto;
+        top: 250px;
+        transform: translateY(-50%);
+        background: linear-gradient(180deg, #43D071 0%, rgb(255 255 255) 30%);
+        border: 1px solid #43D071;
+        padding: 20px;
+    }
+
+    /* Style the modal header */
+    .modal-header {
+        text-align: center;
+        justify-content: center;
+        padding: 20px 0;
+        border-radius: 3px 3px 0px 0px;
+        position: relative;
+        display: flex;
+    }
+
+    /* Style the close button */
+    .close {
+        position: absolute;
+        top: 10px;
+        height: auto;
+        width: 25px;
+        border-radius: 2px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #fff;
+        border: none;
+        /* Remove the border */
+        background: #000000;
+        /* Remove the background */
+    }
+
+    /* Style form inputs */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+    }
+
+    /* Style the modal footer */
+    .modal-footer {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    /* Style the buttons */
+    .btn-success {
+        background-color: #035514;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .col-md-4 {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 100%);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: #2E6841;
+        text-color: #2E6841;
+        font-size: 1.5rem;
+        font-family: 'Assistant', sans-serif;
+        font-weight: 600;
+        height: 125px;
+        width: 425px;
+        border: 1px solid #43D071;
+        border-radius: 10px;
+        text-align: center;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        /* Vertically center content */
+        justify-content: center;
+        /* Horizontally center content */
+        text-align: center;
+        justify-content: center;
+    }
+
+    a {
+        color: #035514;
+    }
+
+    a:hover {
+        color: #035514;
+        text-decoration-color: #125A2A;
+    }
+
+    .row .crops {
+        column-gap: 10px;
+        justify-content: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #id_code {
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+
+    }
+
+    #id_code .label {
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+        background: none;
+    }
+
+    .messages {
+        padding-left: 0px;
+        color: #035514;
+    }
+
+    .alert {
+        width: fit-content;
+        padding: 10px;
+        color: #035514;
+        text-transform: uppercase;
+        margin-top: -20px;
+    }
+</style>
+
+
+
+<br><br><br><br>
+
+<div class="container mt-5">
+    <div class="head-title">
+        <div class="row">
+            <h1>My Crops</h1>
+            <div class="col-md-12 text-end">
+                <button class="btn btn-success" onclick="openMe()"><i class='bx bxs-videos'></i> IoT Tutorial Video </button>
+
+                <!-- The Modal -->
+                <div id="instructionalModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close" onclick="closeMe()">&times;</span>
+                        <h2 style="margin-right:250px;">Instructional Video</h2>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/MWFVYl4SX2A?si=ale2p_esrGFzVgJ0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+                <script>
+                    // Get the modal
+                    var modal = document.getElementById("instructionalModal");
+
+                    // Function to open the modal
+                    function openMe() {
+                        var modal = document.getElementById("instructionalModal");
+                        modal.style.display = "block";
+                    }
+
+                    // Function to close the modal
+                    function closeMe() {
+                        var modal = document.getElementById("instructionalModal");
+                        modal.style.display = "none";
+                    }
+
+                    // Close the modal if the user clicks outside of it
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            closeModal();
+                        }
+                    };
+                </script>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>You can now manage digitally your farm</h3>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-3 button-container">
+            <button class="btn btn-success" id="openModalButton"><i class='bx bxs-plus-circle'></i> Register
+                IoT</button>
+
+            <div class="custom-modal" id="myModal">
+                <div class="modal-content" style="height:500px;">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Register IoT Code Model</h5>
+                        <button type="button" class="close" id="closeModal">&times;</button>
+                    </div>
+
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+
+                        <form method="POST" action="reg_iot">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-light" role="alert" style="margin-top: 50px;;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+            <!-- JavaScript to trigger the modal -->
+            <script>
+                // Get references to the modal and open button
+                var modal = document.getElementById("myModal");
+                var openButton = document.getElementById("openModalButton");
+
+                // Get a reference to the close button in the modal header
+                var closeButton = modal.querySelector(".close");
+
+                // Function to open the modal
+                function openModal() {
+                    var modal = document.getElementById("myModal");
+                    modal.style.display = "block";
+                }
+
+                // Function to close the modal
+                function closeModal() {
+                    var modal = document.getElementById("myModal");
+                    modal.style.display = "none";
+                }
+
+                // Event listener for the open button
+                openButton.addEventListener("click", openModal);
+
+                // Event listener for the close button in the modal header
+                closeButton.addEventListener("click", closeModal);
+
+                // Close the modal if the user clicks outside of it
+                window.addEventListener("click", function (event) {
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                });
+            </script>
+            <button class="btn btn-success btn-md" id="addCropButton"><i class='bx bxs-plus-circle'></i> Add
+                Crop</button>
+        </div>
+    </div>
+    <br>
+
+
+
+    <div class="row">
+        {% if no_iot_message %}
+        <p style="text-align: center">{{ no_iot_message }}</p>
+    </div>
+    {% elif crop_data %}
+    <div class="row">
+        <!-- Your existing items are generated by Django here -->
+        {% for iot_code, crop_names in crop_data.items %}
+        <br>
+
+        <p class="col-md-12 mt-3">
+            IOT CODE: {{ iot_code }}
+        </p>
+    </div>
+    <div class="row crops mt-3">
+        {% for sensor, crop in crop_names.items %}
+        <div class="col-md-4 mb-3">
+            <i class='bx bxs-leaf'></i>
+            <a href="{% url 'mycrop-user' iot_code sensor crop %}" style="text-decoration: none;">
+                {{ crop }}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+            <img src="{% static 'login/images/plant.png' %}" class="img-fluid smaller-image"
+                style="width:350px; height:350px;">
+            <p>{{ no_crop_message }}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<!-- Custom Modal (Hidden by default) -->
+<div class="custom-modal" id="addCropModal">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h5 class="modal-title">Add a Crop to iSMARTPH</h5>
+            <button type="button" class="close" id="closeCrop">&times;</button>
+        </div>
+
+        {% if no_iot_message %}
+        <p style="text-align: center">{{ no_iot_message }}</p>
+        {% else %}
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+
+            <form method="POST" action="crops">
+                {% csrf_token %}
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <p>NOTE:
+                                <br>Please take note that your crop must be 1-2 weeks old before registering it to
+                                iSMARTPH
+                            </p>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="cropName">Date Crop Registration</label>
+                            <input type="datetime" class="form-control" id="dateRegistered" name="dateRegistered"
+                                placeholder="" readOnly required>
+                        </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var dateInput = document.getElementById('dateRegistered');
+
+                                // Get the current date and format it as "YYYY-MM-DD"
+                                var currentDate = new Date();
+                                var year = currentDate.getFullYear();
+                                var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is 0-based
+                                var day = String(currentDate.getDate()).padStart(2, '0');
+
+                                var formattedDate = year + '-' + month + '-' + day;
+
+                                // Set the value of the input field to the current date
+                                dateInput.value = formattedDate;
+                            });
+                        </script>
+
+                        <!--<div class="col-md-6">
+                                    <label for="cropName">Crop Date Planted</label>
+                                    <input type="date" class="form-control" id="cropDatePlanted" name="cropDatePlanted" placeholder="" required>
+                                </div>-->
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <label for="cropName">Crop Name</label>
+                            <select class="form-control" id="cropName" name="cropName" required>
+                                <option value="" selected disabled>Select your crop</option>
+                                {% for crop in crops %}
+                                <option value="{{ crop.crop }}">{{ crop.crop }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cropName">Type of Used Soil</label>
+                            <select class="form-control" id="type_soil" name="typeOfUsedSoil" required>
+                                <option value="" selected disabled>Select your crop</option>
+                                <option value="Loam">Loam</option>
+                                <option value="Compost Soil">Compost Soil</option>
+                                <option value="Garden Soil">Garden Soil</option>
+                                <option value="Clay">Clay</option>
+                                
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="registered_iots">Your IoT</label>
+                            <select class="form-control" name="iot_code" id="iot_code" required>
+                                <option value="" disabled selected>Select your IoT Code</option>
+                                {% for iot_code in iot_code %}
+                                <option value="{{ iot_code }}">{{ iot_code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6" style="display: none;" id="sensor-dropdown">
+                            <label for="cropName">Sensor #</label>
+                            <select class="form-control" name="sensor" id="sensor" required>
+                                <option value="" disabled selected>Select your Sensor</option>
+                                {% for key, value in sensor_options %}
+                                <option value="{{ key }}" {% if key in disabled_sensor_options %} disabled {% endif %}>
+                                    {{value}}
+                                    {% if key in disabled_sensor_options %}(is in use){% endif %}
+
+
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                        <script>
+                            // JavaScript code to handle IoT code selection and sensor population
+                            $(document).ready(function () {
+                                $('#iot_code').change(function () {
+                                    var selectedIOTCode = $(this).val();
+                                    var sensorDropdown = $('#sensor-dropdown');
+                                    var sensorSelect = $('#sensor');
+
+                                    // Show the sensor dropdown when an IoT code is selected
+                                    sensorDropdown.css('display', 'block');
+
+                                    // Populate the sensor dropdown based on the selected IoT code
+                                    var sensorsForIOT = sensor_options[selectedIOTCode] || [];
+                                    sensorSelect.empty(); // Clear existing options
+
+                                    // Fetch the list of sensors that have data for the selected IoT code
+                                    var sensorsWithData = sensors_with_data[selectedIOTCode] || [];
+
+                                    sensorsForIOT.forEach(function (sensor) {
+                                        var sensorName = sensor.key;
+                                        var option = $('<option value="' + sensorName + '">' + sensor.value + '</option>');
+
+                                        // Check if the sensor has data for the selected IoT code
+                                        var isDisabled = sensorsWithData.indexOf(sensorName) === -1;
+
+                                        if (isDisabled) {
+                                            option.prop('disabled', true);
+                                        }
+
+                                        sensorSelect.append(option);
+                                    });
+                                });
+                            });
+                        </script>
+
+                    </div>
+
+                </div>
+        </div>
+
+        <!-- Modal Footer --><br>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="closeCropFooter">CLOSE</button>
+            <button type="submit" class="btn btn-success">ADD</button>
+        </div>
+        </form>
+
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript to trigger the custom modal (Add Crop)-->
+<script>
+    document.getElementById("addCropButton").addEventListener("click", function () {
+        document.getElementById("addCropModal").style.display = "flex";
+    });
+
+    document.getElementById("closeCrop").addEventListener("click", function () {
+        document.getElementById("addCropModal").style.display = "none";
+    });
+
+    // Attach event listener for the "Close" button in the modal footer
+    document.getElementById("closeCropFooter").addEventListener("click", function () {
+        document.getElementById("addCropModal").style.display = "none";
+    });
+</script>
+</div>
+</div>
+
+<footer>
+    <h1><br></h1>
+</footer>
+
+{%endblock%}

@@ -1,0 +1,1 @@
+web gunicorn STARTUP.wsgi:application --log-file - 

@@ -1,0 +1,126 @@
+{% extends "login/template.html" %}
+{% load static %}
+
+{% load crispy_forms_tags%}
+
+
+{%block content%}
+<head>
+    <title>{% block title %} Forgot Password {% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;800&family=Fredoka&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Fredoka&family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<style>
+:root{
+    --bg-color: #FFF;
+    --text-color: #146F32;
+    --main-color: #125A2A;
+    --btn-color: #035514;
+    --btn-hover:var(--bg-color);
+}
+
+body {
+    background-image: url("{% static 'login\images\iSMARTph.png' %}");
+    background-size: 100% 100%; /* This will cover the entire viewport */
+    /*background-size: cover; /* This will cover the entire viewport */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background fixed as you scroll */
+    padding: 20px;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo i{
+    color: var(--main-color);
+    font-size: 28px;
+    margin-right: 3px;
+    font-size: 3.0rem;
+    font-weight: 500;
+}
+.logo span{
+    color: var(--main-color);
+    font-size: 2.7rem;
+    font-weight: 1000;
+    text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.login-container {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 20px;
+    width: 100%;
+    height: 130%;
+    background: #FFFF;
+    margin: -60px 50px 0 10px;
+}
+.row{
+    margin-top: 100px;
+}
+
+.btn-success{
+    background: var(--main-color);
+    width: auto;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.0rem;
+}
+
+legend{
+    text-align: center;
+    font-family: 'Assistant', sans-serif;
+    color: #000;
+    font-weight: 500;
+    font-size: 2.0rem;
+}
+
+</style>
+
+
+<body>
+
+<div class="container mt-5">
+    <header class="justify-content-left">
+        <div class="logo"><span><i class="ri-plant-line"></i>iSMARTPH</span>
+        </div>
+    </header>
+    
+    <div class="row justify-content-left">
+        <div class="col-md-4">
+            <div class="login-container">
+                <br>
+                <div class="alert alert-info">
+                    An email has been sent with instructions to reset your password
+                    
+                </div>
+                <br> 
+                <div class="border-top pt-3">
+                    <small class="text-muted">
+                        Return to <a href="/" class="ml-2">login.</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+{%endblock%}
+
+
+

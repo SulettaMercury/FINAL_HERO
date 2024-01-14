@@ -1,0 +1,224 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | Dashboard
+{%endblock%}
+
+{%block nav%}
+
+    <li><a href="home" class = "active">Dashboard</a></li>
+    <li><a href="crops">My Crops</a></li>
+    <li><a href="history">Harvest History</a></li>
+    
+    <!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
+    
+
+{%endblock%}
+{%block content%}
+
+
+<style>
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+        border: 1px solid rgba(3, 85, 20, 0.42);
+        background: #E7FFEF;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 60%; /* Adjust the maximum width as needed */
+        max-height: 60%;
+        text-align: center;
+    }
+
+    .modal p{
+        text-align: center;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin: 30px;
+    }
+
+    .modal h2 {
+        color: #095833;
+        margin-top: 0;
+    }
+
+    .modal .bxs-info-circle{
+        font-size: 100px;
+        color: #095833;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    /* Icon Styles */
+    .bx {
+        cursor: pointer;
+    }
+    
+    .bxs-leaf{
+        font-size: 25px;
+        justify: center;
+        fill: #2E6841;
+        filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+</style>
+
+    <br><br><br><br>
+
+    <div class="container mt-5">
+        <div class="head-title">
+            <h1>Dashboard</h1>
+            <h3 id="greeting"></h3>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+            // Get the current time
+            var now = new Date();
+            var hours = now.getHours();
+
+            // Define the greeting messages
+            var greeting;
+
+            if (hours >= 5 && hours < 12) {
+                greeting = "Good Morning";
+            } else if (hours >= 12 && hours < 17) {
+                greeting = "Good Afternoon";
+            } else {
+                greeting = "Good Evening";
+            }
+
+            // Update the greeting message on the page
+            $("#greeting").text("Hi {{first_name}}, " + greeting+"!");
+        }
+    );
+    </script>
+
+     <!-- Move the container below the header -->
+     <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- First container content -->
+                    <h1>Welcome to iSMARTPH!
+                    <p>Experience the most convenient way to manage your small farm with the help of iSMARTPH</p></h1>
+                <div class="">
+                    <!--<img src="{% static 'login/images/plant.png' %}">-->
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <h3>Explore iSMARTPH Features</h3>
+        </div>
+        
+        <div class="row mt-4" style="margin-left: -19px;">
+
+            <div class="card col-md-3 mb-4" style="width: 430px; border-radius: 15px;">
+                <h1> <i class='bx bxs-leaf'></i> My Crops </h1>
+                <p> Explore how you can digitally manage your small farm using iSMARTPH <i class='bx bxs-info-circle' onclick="openModal('myCropsModal')"></i> </p>
+            </div>
+            
+            <div class="card col-md-3 mb-4" style="width: 430px; border-radius: 15px;">
+                <h1> <i class='bx bxs-leaf'></i> Growth Rate </h1>
+                <p>A growth rate of your registered plant in iSMARTPH can also be monitored and observed conveniently <i class='bx bxs-info-circle' onclick="openModal('growthRateModal')"></i></p>
+            </div>
+        
+            <div class="card col-md-3 mb-4" style="width: 430px; border-radius: 15px;">
+                <h1> <i class='bx bxs-leaf'></i> Water Temperature </h1>
+                <p>iSMARTPH offers a feature where you can control the temperature of the water before irrigation <i class='bx bxs-info-circle' onclick="openModal('waterTemperatureModal')"></i></p>
+            </div>
+            
+        </div>
+
+
+        <!-- Modals -->
+        <div class="overlay" id="overlay"></div>
+
+        <div class="modal" id="myCropsModal">
+            <h1><i class='bx bxs-info-circle'></i></h1>
+            <h2>DID YOU KNOW?</h2>
+            <p>iSMARTPH can help you to conserve more water as it can automatically irrigate your crop
+                based on its soil moisture level. In iSMARTPH your crop is well maintained and monitored 
+                as it has a feature for detecting your mini greenhouse temperature and humidiy. 
+                Worry less and let the iSMARTPH manage your crops!
+            </p>
+            <button class="btn btn-md btn-success" onclick="closeModal('myCropsModal')">CLOSE</button>
+            <button class="btn btn-md btn-success" onclick="redirectToCropsUser()">MY CROPS</button>
+
+            <script>
+                function redirectToCropsUser() 
+                {
+                    window.location.href = "{% url 'crops-user' %}";
+                    // Optionally close the modal after redirecting
+                    closeModal('myCropsModal');
+                }
+            </script>
+
+        </div>
+
+        <div class="modal" id="growthRateModal">
+            <h1><i class='bx bxs-info-circle'></i></h1>
+            <h2>DID YOU KNOW?</h2>
+            <p>iSMARTPH use a machine learning algorithm to predict your crop’s growth rate condition based on the 
+                environmental factors such as temperature, humidity, and your crop’s soil moisture level. 
+                The machine algorithm called KNN and it classified your crop’s health condition based on predicted classification of the crop 
+                whether it is Good or Bad. Using iSMARTPH you can also know whether your crop can be harvest already or not yet. 
+                Note that it is still important to look at crop’s growth before harveesting it.
+            </p>
+            <button class="btn btn-md btn-success" onclick="closeModal('growthRateModal')">CLOSE</button>
+        </div>
+
+        <div class="modal" id="waterTemperatureModal">
+            <h1><i class='bx bxs-info-circle'></i></h1>
+            <h2>DID YOU KNOW?</h2>
+            <p>
+                iSMARTPH implemented to use a water temperature system before irrigating a cetan crop. Having too hot water espcially when it is too hot
+                Studies said that too much heat of water can cause a harm for a crop same goes for a too cold water as it may shock the crop and the root itself. 
+            </p>
+            <button class="btn btn-md btn-success" onclick="closeModal('waterTemperatureModal')">CLOSE</button>
+        </div>
+
+        <script>
+            function openModal(modalId) {
+                var modal = document.getElementById(modalId);
+                var overlay = document.getElementById('overlay');
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+
+            function closeModal(modalId) {
+                var modal = document.getElementById(modalId);
+                var overlay = document.getElementById('overlay');
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+            }
+        </script>
+       
+
+    {%endblock%}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

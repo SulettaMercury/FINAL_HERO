@@ -1,0 +1,167 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | Dashboard
+{%endblock%}
+
+{%block nav%}
+
+<li><a href="{% url 'home-user' %}">Dashboard</a></li>
+<li><a href="{% url 'crops-user' %}">My Crops</a></li>
+<!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
+
+
+{%endblock%}
+{%block content%}
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iSmartPH | My Crops</title>
+<link rel="icon" type="image/png" href="{% static 'images/log1.png' %}" alt="Your Image">
+
+<link rel="stylesheet" type="text/css" href="{% static 'login\css\mycrop.css' %}">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Poppins:wght@600&display=swap"
+    rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Fredoka&family=Poppins:wght@600&display=swap"
+    rel="stylesheet">
+
+</head>
+
+<style>
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    @media only screen and (max-width: 600px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        th {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            margin: 0 0 1em 0;
+        }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            padding-left: 50%;
+            text-align: left;
+        }
+
+        td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            content: attr(data-label);
+        }
+    }
+
+    .table-container {
+        max-height: 300px; /* Adjust the height as needed */
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+    
+</style>
+
+<body>
+
+    <br><br><br><br>
+
+
+    <div class="container mt-5">
+        <div id="content9">
+            <br>
+            <div class="row">
+                
+                <div class="col-6">
+                    <a href="{% url 'mycrop-user' iot_code sensor crop %}" class="btn back-button" style="margin-left: -20px;"><i class='bx bx-chevron-left' style="font-size: 18px;"></i> Go back to {{crop}}</a>
+                    <br><br>
+                    <h3 class="text-left">{{crop}} Progress Report Table</h3>
+                </div>
+
+                <br><br>
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Crop Growth Health Condition</th>
+                                <th>Days Progress</th>
+                                <th>Predictive Harvest Range</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in data %}
+                            <tr>
+                                <td>{{ entry.date }}</td>
+                                <td>{{ entry.prediction }}</td>
+                                <td>{{ entry.days_progress }}</td>
+                                <td>{{ entry.predictive_harvest_range }} days</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{%endblock%}

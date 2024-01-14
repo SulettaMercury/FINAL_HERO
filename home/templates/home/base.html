@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSmartPH</title>
+    <link rel="icon" type="image/png" href="{% static 'images/log1.png' %}" alt="Your Image">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'login\css\styles.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;800&family=Fredoka&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Fredoka&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-cvVRK4L3r54uF6pDQEA8EF3VWz4p9lhFfQMat6G0bzglXNPm3QynV9r3DHQT1p7a" crossorigin="anonymous">
+
+</head>
+
+<style>
+
+
+.notificationIcon i{
+    font-size: 25px;
+    position: relative;
+    display: inline-block;
+    margin-right: 50px; /* Adjust this margin as needed */
+    margin-top: 10px;
+}
+
+.notificationCount i{
+    position: absolute;
+    top: -8px; /* Adjust this value to position the count relative to the bell icon */
+    right: 8px; /* Adjust this value to position the count relative to the bell icon */
+    background-color: red; /* Add your preferred styling for the count */
+    color: white; /* Add your preferred styling for the count */
+    border-radius: 50%; /* Optional: Add border-radius for a circular count */
+    padding: 4px 8px; /* Adjust padding as needed */
+}
+
+</style>
+
+<body>
+    <header>
+        <div class="logo"><span><i class="ri-plant-line"></i>iSMARTPH</span>
+        </div>
+        
+        <ul class="navbar">
+            {% block nav %}
+            {%endblock%}
+        </ul>
+     
+        <div class="main">
+            <!-- Add this block inside the <div class="main"> -->
+            <!-- Inside your header where you want to display the notification icon and count -->
+            <!--<div class="notificationIcon">
+                 <a href="{% url 'notifications' %}">-->
+                    <!--<i class='bx bxs-bell'></i>
+                    {% if total_unread_count > 0 %}
+                        <span class="notificationCount">{{ total_unread_count }}</span>
+                    {% endif %}
+                </a>
+            </div>-->
+
+
+
+            {% if user.is_authenticated %}
+            <div class="current_user">
+                <p>{{first_name}} {{last_name }} <br>{{email}}</p>
+                {% else %}
+                <p>You are not logged in.</p>
+            {% endif %}
+            </div>
+            
+            <a href="/settings" class="logout"><i class='bx bx-cog'></i></a>   
+            <a href="/logout" class="logout"><i class='bx bx-log-in'></i></a>
+            
+            
+        </div>
+
+        <script>
+            window.addEventListener('load', () => {
+                 // Get the current_user container
+            const current_user = document.querySelector('.current_user');
+        
+            // Get the <p> element that contains the user's name
+            const userName = current_user.querySelector('p');
+        
+            // Calculate the width based on the text length
+            const textWidth = userName.offsetWidth;
+        
+            // Adjust the container width based on the text width
+            current_user.style.minWidth = textWidth + 'px';
+        });
+        </script>
+
+    </header>
+
+    {%block content %}
+
+    {%endblock %}
+ 
+    <footer>
+
+    </footer>
+
+    <!--js link-->
+    <!-- Bootstrap JS (optional, for certain components to work) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

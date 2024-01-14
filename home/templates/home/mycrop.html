@@ -1,0 +1,640 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | Dashboard
+{%endblock%}
+
+{%block nav%}
+
+<li><a href="home">Dashboard</a></li>
+<li><a href="crops"  class = "active">My Crops</a></li>
+<li><a href="history">Harvest History</a></li>
+
+
+{%endblock%}
+{%block content%}
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iSmartPH | My Crops</title>
+<link rel="icon" type="image/png" href="{% static 'images/log1.png' %}" alt="Your Image">
+
+<link rel="stylesheet" type="text/css" href="{% static 'login\css\mycrop.css' %}">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Poppins:wght@600&display=swap"
+    rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&family=Fredoka&family=Poppins:wght@600&display=swap"
+    rel="stylesheet">
+
+</head>
+
+<style>
+    #content8 .bxs-leaf {
+        font-size: 25px;
+        fill: #2E6841;
+        filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+
+
+
+    #content8 .image-column {
+        flex: 1;
+        text-align: center;
+        /* Center the image within the column */
+    }
+
+    #content8 .image {
+        max-width: 30%;
+        /* Adjust the image width as needed */
+        height: auto;
+        display: block;
+        margin-top: 20px;
+        margin-left: 10px;
+    }
+
+    #content8 .content-column {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+        margin-top: -170px;
+        margin-left: 200px;
+    }
+
+    .tooltip {
+        visibility: hidden;
+        background-color: #cacaca;
+        color: #000000;
+        text-align: center;
+        border-radius: 10px;
+        position: absolute;
+        /* Adjust as needed to center the tooltip */
+        opacity: 0;
+        position: absolute;
+        margin-left: -20px;
+        margin-top: 50px;
+        transition: opacity 0.3s;
+        height: auto;
+        width: auto;
+        padding: 10px;
+        white-space: pre-line;
+    }
+    #content5:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+    }
+    #content6:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+    }
+    #content7:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+    }
+    .column1:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+        margin-top: -20px;
+        margin-left: 200px;
+    }
+    .column2:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+        margin-top: -20px;
+        margin-left: 200px;
+    }
+    .column3:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+        margin-top: -20px;
+        margin-left: 200px;
+    }
+    #temp:hover .tooltip{
+        visibility: visible;
+        opacity: 1;
+    }    
+    .btn-link {
+        color: #000; /* Set your desired text color */
+        text-decoration: none; /* Remove underline */
+    }
+</style>
+
+<body>
+
+    <br><br><br><br>
+
+
+    <div class="container mt-5">
+
+        <div id="content9" style="margin-top: 50px;">
+            
+            <div class="row">
+                
+                <div class="col-6">
+                    <h3 class="text-left">Real-Time Crop Monitoring</h3>
+                   
+                </div>
+                
+                <div class="col-12 col-md-6 d-flex justify-content-end mt-3">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                        
+                            <button type="button" class="btn" data-toggle="modal" data-target="#harvestModal">
+                                Click to Harvest {{ crop }}
+                            </button>  
+                                
+                            <button type="button" class="btn" data-toggle="modal" data-target="#RemovedModal">
+                                Remove Crop {{crop}}
+                            </button>   
+                        
+                        <button type="button" class="btn btn-link" data-href="{% url 'crop_progress_report' iot_code sensor crop %}">View Crop Progress Report</button>
+                        
+                        <button type="button" class="btn btn-link" data-href="{% url 'irrigation_records-user' iot_code sensor crop %}">View Irrigation Records</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Add click event listener to each button
+                    document.querySelectorAll('.btn-link').forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            // Get the URL from the data-href attribute
+                            var url = button.getAttribute('data-href');
+                            
+                            // Redirect to the specified URL
+                            window.location.href = url;
+                        });
+                    });
+                });
+            </script>
+            
+
+
+            <!-- Modal Structure -->
+            <div class="modal fade" id="harvestModal" tabindex="-1" role="dialog" aria-labelledby="harvestModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content" style="width: 400px;
+                    height: auto;
+                    text-align: left;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="harvestModalLabel">Harvest Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to harvest your crop {{ crop }}? 
+                                
+                                {%if harvest_days == 0%}
+                                This crop is ready to harvest
+                                {%else%}
+                                This crop still not ready to harvest yet as it still has {{harvest_days}} days.
+                                {%endif%}
+                                
+                                <br>
+                                BEFORE CONTINUING, MAKE SURE TO TURN OFF YOUR SENSOR MODULE TO ENSURE ERROR FREE REMOVAL
+                            </p>
+                            <!-- Add any additional information or options here -->
+                        </div>
+                        <div class="modal-footer" style="justify-content: center;">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                            <!-- Add the logic to perform harvesting and removal actions here -->
+                        <form method="post" action="{% url 'harvest1' %}">
+                            {% csrf_token %}
+                            <!-- Your form fields go here -->
+                            <input type="hidden" name="iot_code" value="{{ iot_code}}">
+                            <input type="hidden" name="sensor" value="{{ sensor}}">
+                            <input type="hidden" name="crop" value="{{ crop}}">
+                            <button type="submit" class="btn btn-success" onclick="performHarvest()">HARVEST</button>
+
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Remove Crop -->
+            <div class="modal fade" id="RemovedModal" tabindex="-1" role="dialog" aria-labelledby="RemovedModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content" style="width: 400px;
+                    height: auto;
+                    text-align: left;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="RemovedModalLabel">Remove Crop Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to remove your crop {{ crop }}? After clicking "REMOVE", all your crops record will be deleted. Do you still want to continue?
+                                <br>
+                                BEFORE CONTINUING, MAKE SURE TO TURN OFF YOUR SENSOR MODULE TO ENSURE ERROR FREE REMOVAL
+                            </p>
+                            <!-- Add any additional information or options here -->
+                        </div>
+                        <div class="modal-footer" style="justify-content: center;">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                            <!-- Add the logic to perform harvesting and removal actions here -->
+                            <form method="post" action="{% url 'remove' %}">
+                                {% csrf_token %}
+                                <!-- Your form fields go here -->
+                                <input type="hidden" name="iot_code" value="{{ iot_code}}">
+                                <input type="hidden" name="sensor" value="{{ sensor}}">
+                                <input type="hidden" name="crop" value="{{ crop}}">
+                            <button type="submit" class="btn btn-success" onclick="performRemove()">REMOVE</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional: Add a script to handle the harvest action -->
+            <script>
+                function performHarvest() {
+                    // Add the logic to perform the harvesting and removal actions here
+                    // You can use AJAX to send a request to the server or perform any other necessary actions
+                    // Once the actions are completed, you can close the modal
+                    $('#harvestModal').modal('hide');
+                }
+            </script>
+
+            <!-- Optional: Add a script to handle the harvest action -->
+            <script>
+                function performRemove() {
+                    // Add the logic to perform the harvesting and removal actions here
+                    // You can use AJAX to send a request to the server or perform any other necessary actions
+                    // Once the actions are completed, you can close the modal
+                    $('#RemovedModal').modal('hide');
+                }
+            </script>
+
+
+        </div>
+        <div id="content1">
+            <i class='bx bxs-leaf'></i>
+            <div class="row m-sm-1">
+                <h3 style="font-size: 20px">Crop Name</h3>
+                <p>{{crop_name}}</p>
+            </div>
+        </div>
+        <div id="content2">
+            <i class='bx bx-calendar-check'></i>
+            <div class="row m-sm-1">
+                <h3 style="font-size: 20px">Date Registered</h3>
+                <p>{{ date_registered }}</p>
+            </div>
+        </div>
+        <div id="content3">
+            <i class='bx bx-calendar-check'></i>
+            <div class="row m-sm-1">
+                <h3 style="font-size: 20px">Harvest Days Range</h3>
+                <p>{{harvest_days}} day/s</p>
+            </div>
+        </div>
+        <div id="content4">
+
+            <div class="text-center mt-2" style="
+            font-size: 1.5rem;
+            color: var(--main-color);
+            font-family: 'Fredoka', sans-serif;
+            ">
+                Irrigation Monitoring
+            </div>
+            <br>
+            <div class="col-md-12" style="">
+                <p class="border-bottom" style="font-family: 'Fredoka', sans-serif; font-size: 18px;">Date & Time</p>
+                <div class="col-md-12">
+                    <p class="border-bottom" style="font-size: 20px;">{{ last_on_date }} || {{lastOn_value}}</p>
+                </div>
+            </div>
+
+            <div class="col-md-12" id = "temp">
+                <div class="tooltip">Temperature of water that will be irigated when the temperature is too cold</div>
+                <p class="border-bottom" style="font-family: 'Fredoka', sans-serif; font-size: 18px;">Temperature for
+                    Irrigation</p>
+                <div class="col-md-12">
+                    <p class="border-bottom" style="font-size: 20px;">{{ waterTemp }}°C</p>
+                </div>
+            </div>
+
+            <div class="row">
+                
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="border-radius: 10px;
+                    border: 1px solid rgba(3, 85, 20, 0.42);
+                    background: #E10202;
+                    box-shadow: 3px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+                        SET WATER TEMPERATURE
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                </div>
+            
+                <div class="col-md-6">
+                    {% if switch == "0" or switch == 0 %} <!--switch == '0'-->
+                    <form method="post" action="{% url 'onButton' %}">
+                        {% csrf_token %}
+                        <!-- Your form fields go here -->
+                        <input type="hidden" name="iot_code" value="{{ iot_code}}">
+                        <input type="hidden" name="sensor" value="{{ sensor}}">
+                        <input type="hidden" name="crop" value="{{ crop}}">
+                        <button type="submit" class="btn btn-success" style="margin-left: 1px; border-radius: 10px;
+                        border: 1px solid rgba(3, 85, 20, 0.42);
+                        background: #2000E2;
+                        box-shadow: 3px 4px 4px 0px rgba(0, 0, 0, 0.25);">ON PUMP VALVE</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'offButton' %}">
+                        {% csrf_token %}
+                        <!-- Your form fields go here -->
+                        <input type="hidden" name="iot_code" value="{{ iot_code}}">
+                        <input type="hidden" name="sensor" value="{{ sensor}}">
+                        <input type="hidden" name="crop" value="{{ crop}}">
+                        <button type="submit" class="btn btn-success" style="border-radius: 10px;
+                        border: 1px solid rgba(3, 85, 20, 0.42);
+                        background: #238B45;
+                        box-shadow: 3px 4px 4px 0px rgba(0, 0, 0, 0.25);">OFF PUMP VALVE</button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            
+            <br>
+
+            <div class="col-md-12" style="">
+                
+                <p class="border-bottom" style="font-weight: 700; font-family: 'Fredoka', sans-serif; font-size: 20px; margin-top: -10px;">PUMP STATUS:
+                    {% if switch == "0" or switch == 0 %} <!--switch == '0'-->
+                    OFF
+
+                    {%else%}
+                    ON
+                    {%endif%}
+
+                </p>
+
+            </div>
+            <br><br>
+            
+        </div>
+        
+
+        <div id="content5">
+            {% if sml_classification == "SUFFICIENT"%}
+            <div class="tooltip">Soil moisture is optimal</div>
+
+            {% elif sml_classification == "WET"%}
+            <div class="tooltip">Soil moisture is wet and could drown the plant</div>
+
+            {% elif sml_classification == "DRY"%}
+            <div class="tooltip">Soil moisture is dry and not very efficient for the plant</div>
+        
+            {% else %}
+            <p> HELLO WORLD</p>
+            {% endif %}
+            <h3>Soil Moisture Level</h3>
+            <p>{{ soil_moisture }}% {{sml_classification}}</p>
+        </div>
+
+        <div id="content6">
+           
+            {% if temperature_classification == "JUST RIGHT"%}
+            <div class="tooltip">Environment tempreature is optimal</div>
+
+            {% elif temperature_classification == "TOO HOT"%}
+            <div class="tooltip">Environment tempreature is too hot and it may pose a harmful risk for the crop</div>
+
+            {% elif temperature_classification == "TOO COLD"%}
+            <div class="tooltip">Environment tempreature is too cold and it may adversely affect crops.</div>
+        
+            {% else %}
+            <p> HELLO WORLD</p>
+            {% endif %}
+            <h3>Temperature</h3>
+            <p>{{ temp }}°C {{temperature_classification}}</p>
+        </div>
+                
+        <div id="content7">
+            {% if humidity_classification == "GOOD"%}
+            <div class="tooltip">Humidity is optimal</div>
+
+            {% elif humidity_classification == "TOO HIGH"%}
+            <div class="tooltip">High air humidity detected, potential impact on crops.</div>
+
+            {% elif humidity_classification == "TOO LOW"%}
+            <div class="tooltip">Low air humidity levels detected, posing potential risks.</div>
+        
+            {% else %}
+            <p> HELLO WORLD</p>
+            {% endif %}
+
+            <h3>Humidity</h3>
+            <p>{{ humid }}% {{humidity_classification}}</p>
+        </div>
+
+
+
+        <div id="content8">
+
+            <div class="card-title">
+
+                <h1 style="text-align: center">Crop Growth Rate Condition</h1>
+
+                <div class="image-column">
+                    <img class="image" src="{% static 'login/images/plant.png' %}" alt="Your Image">
+                </div>
+
+                <div class="content-column" id="prediction_monitoring">
+                    
+                    <div class="column1">
+                        <i class='bx bxs-leaf'></i>
+                        Now: {{datetime_of_prediction}} is {{predicted_classification}}
+                        <div class="tooltip"> Environmental factors predictive condition monitoring
+                        </div>
+                    </div>
+                    <div class="column2">
+                        <i class='bx bxs-leaf'></i>
+                        Yesterday {{formatted_date}} Crop's Current Health Condition is {{predicted_output}}
+                        <div class="tooltip"> Yesterday's crop condition is {{predicted_output}}</div>
+                    </div>
+                    <div class="column3">
+                        <i class='bx bxs-leaf'></i>{{crop}} can be harvest after {{harvest_days}} day/s
+                        <div class="tooltip"> Your crops expected harvest range is after {{harvest_days}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card-img" style="margin-top: -20px;">
+                    <div class="col-md-4"></div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <br>
+                <div class="col-md-12">
+                    <!--<p> Growth Rate: 10%</p> 
+                        <text>{{crop_name}} can be harvest after 25 days</text>-->
+                </div>
+
+                <!-- The Modal -->
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Set Water Temperature</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form method="post" action="{% url 'temp' %}">
+                                    {% csrf_token %}
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="celcius" class="col-form-label">Set Temperature</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="number" id="celcius" name="celcius" class="form-control"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="fahrenheit" class="col-form-label">Temperature in
+                                                    Fahrenheit</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" id="fahrenheit" class="form-control" value=""
+                                                    readonly>
+                                            </div>
+                                        </div>
+
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <script>
+                                        // Function to convert Celsius to Fahrenheit
+                                        function convertCelsiusToFahrenheit(celsius) {
+                                            return (celsius * 9 / 5) + 32;
+                                        }
+
+                                        // Get the input element
+                                        const celciusInput = document.getElementById('celcius');
+                                        // Get the readonly input element for Fahrenheit
+                                        const fahrenheitInput = document.getElementById('fahrenheit');
+
+                                        // Add an event listener to update Fahrenheit when Celsius is changed
+                                        celciusInput.addEventListener('input', function () {
+                                            const celsius = parseFloat(celciusInput.value);
+                                            if (!isNaN(celsius)) {
+                                                const fahrenheit = convertCelsiusToFahrenheit(celsius);
+                                                fahrenheitInput.value = fahrenheit.toFixed(2); // Display Fahrenheit with 2 decimal places
+                                            } else {
+                                                fahrenheitInput.value = ''; // Clear Fahrenheit input if Celsius input is not a valid number
+                                            }
+                                        });
+                                    </script>
+
+                            </div>
+                            <input type="hidden" name="iot_code" value="{{ iot_code}}">
+                            <input type="hidden" name="sensor" value="{{ sensor}}">
+                            <input type="hidden" name="crop" value="{{ crop}}">
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-dismiss="modal">CLOSE</button>
+                                <button type="submit" class="btn btn-success">SET</button>
+                            </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <footer>
+
+    </footer>
+
+    </div>
+
+
+    <!-- Include Firebase JavaScript SDK
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+    Your Firebase configuration
+    <script>
+        var config = {
+            "apiKey": "AIzaSyDRo3n2Vau04OzvSoi6kPjSH0hdwDvmXBg",
+            "authDomain": "smart-6aa8f.firebaseapp.com",
+            "databaseURL": "https://smart-6aa8f-default-rtdb.asia-southeast1.firebasedatabase.app",
+            "projectId": "smart-6aa8f",
+            "storageBucket": "smart-6aa8f.appspot.com",
+            "messagingSenderId": "940651613138",
+            "appId": "1:940651613138:web:53d4d3e2c3b35317dc160b",
+            "measurementId": "G-35KEBDFY60",
+        };
+        
+        firebase.initializeApp(config);
+    </script> -->
+
+    <script>
+        // Function to refresh the page
+        function refreshPage() {
+            location.reload();
+        }
+
+        // Set a timer to refresh the page 
+        setTimeout(refreshPage, 20000); // 
+    </script>
+
+    <!--js link-->
+    <script text="text/javascript" src="{% static 'js\script.js' %}"></script>
+    <!-- Bootstrap JS (optional, for certain components to work) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'"></script>
+    <!--js link-->
+    <script text="text/javascript" src="{% static 'js\script.js' %}"></script>
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</body>
+
+</html>
+
+{%endblock%}

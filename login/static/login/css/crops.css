@@ -1,0 +1,430 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Assistant', sans-serif;
+    font-family: 'Poppins', sans-serif;    
+    text-decoration: none;
+    list-style: none;
+}
+:root{
+    --bg-color: #FFF;
+    --text-color: #146F32;
+    --main-color: #125A2A;
+    --btn-color: #035514;
+    --btn-hover:var(--bg-color);
+}
+body{
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-y: scroll;
+}
+
+.head-title {
+    display: fixed;
+}
+.head-title h1{
+    font-size: 2.5rem;
+    color: var(--main-color);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+}
+
+
+.head-title h3{
+    font-size: 1.5rem;
+    color: #000;
+    font-family: 'Fredoka', sans-serif;
+}
+header{
+    position: fixed;
+    width: 100%;
+    height: 20%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    background: transparent;
+    padding: 28px, 12%;
+    transition: all .50s ease;
+    border: 0px solid #43D071;
+    background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 100%);
+    font-family: 'Assistant', sans-serif;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo i{
+    color: var(--main-color);
+    font-size: 28px;
+    margin-right: 3px;
+    font-size: 3.0rem;
+    font-weight: 500;
+}
+.logo span{
+    color: var(--main-color);
+    font-size: 2.7rem;
+    font-weight: 1000;
+    text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.logout{
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 0px solid rgba(3, 85, 20, 0.42);
+    background: #FAFAFA;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    background-color: #FFF;
+    border-radius: 3px;
+    border-color: #000;
+    text-decoration: none;
+}
+
+.logout i{
+    color: var(--main-color);
+    font-size: 1.8rem;
+    margin-right: 3px;
+    font-weight: 600;
+    justify-content: center;
+}
+.logout span{
+    color: var(--main-color);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+.current_user{
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 0px solid rgba(3, 85, 20, 0.42);
+    background: #FAFAFA;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    background-color: #FFF;
+    border-radius: 3px;
+    border-color: #000;
+}
+
+.user_profile{
+    background-color: var(--main-color);
+    border-radius: 50%;
+}
+.user_profile i{
+    color: var(--bg-color);
+}
+.navbar{
+    display: inline;
+    margin-top: 25px;
+    font-family: 'Assistant', sans-serif;
+}
+.navbar a{
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    justify-content: space-evenly;
+    font-size: 1.3rem;
+    font-weight: lighter;
+    padding: 1px;
+    margin: 10px 20px;
+    transition: all .50s ease;
+}
+.navbar a:hover{
+    color:var(--main-color);
+    text-decoration: underline;
+    text-decoration-color: #125A2A;
+}
+.navbar a.active{
+    color: #125A2A;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+.main{
+    display: flex;
+    align-items: center;
+}
+.main a{
+    margin-right: 25px;
+    margin-left: 10px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all .50 ease;
+}
+
+.current_user {
+    font-size: 1px;
+    color: #05481B;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 100;
+    margin: 0px 0px 0px 0px;
+    display: flex;
+    align-items: center;
+}
+
+.current_user p{
+    font-size: 12px;
+    display: flex;
+    padding: 30px;
+    margin-top: 15px;
+}
+
+.current_user h4{
+    font-size: 12px;
+    display: flex;
+    padding: 25px;
+    margin-top: 15px;
+}
+
+
+    /* Style the modal background overlay */
+    .custom-modal {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color:none;
+        z-index: 1000;
+    }
+    
+    /* Style the modal content */
+    .modal-content {
+        position: relative;
+        display: flex;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(3.5px);    width: 80%;
+        max-width: 600px;
+        height: fit-content;
+        margin: 0 auto;
+        top: 250px;
+        transform: translateY(-50%);
+        background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 30%);
+        border: 1px solid #43D071;
+        padding: 20px;
+    }
+    
+    /* Style the modal header */
+    .modal-header {
+        text-align: center;
+        justify-content: center;
+        padding: 20px 0;
+        border-radius: 3px 3px 0px 0px;
+        position: relative;
+        display: flex;
+    }
+    
+    /* Style the close button */
+    .close {
+        position: absolute;
+        top: 10px;
+        height: auto;
+        width: 25px;
+        border-radius: 2px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #fff;
+        border: none; /* Remove the border */
+        background: #000000; /* Remove the background */
+    }
+    
+    /* Style form inputs */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+    }
+    
+    /* Style the modal footer */
+    .modal-footer {
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    /* Style the buttons */
+    .btn-success {
+        background-color: #035514;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+    
+    .col-md-4 {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 100%);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: #2E6841;
+        font-size: 1.5rem;
+        font-family: 'Assistant', sans-serif;
+        font-weight: 600;
+        height: 125px;
+        width: 425px;
+        border: 1px solid #43D071;
+        border-radius: 10px;
+        text-align: center;
+        padding: 10px;
+        display: flex;
+        align-items: center; /* Vertically center content */
+        justify-content: center; /* Horizontally center content */
+        text-align: center;
+        justify-content: center;
+    }
+
+    a{
+        color:  #035514;
+    }
+
+    .row .crops{
+        column-gap: 10px;
+        justify-content: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .button-container{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #id_code{
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+
+    }
+
+    #id_code .label{
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        justify-content: center;
+        text-align: left;
+        background: none;
+    }
+
+    .messages{
+        padding-left:0px;
+        color: #035514;
+    }
+    .alert{
+        width: fit-content;
+        padding: 10px;
+        color: #035514;
+        text-transform: uppercase;
+        margin-top: -20px;
+    }
+
+
+/* Updated CSS to make the container responsive */
+.container {
+    margin-top: 5rem; /* Add margin for spacing */
+    padding: 0 15px; /* Add horizontal padding for responsiveness */
+
+    /* Optional: Set a maximum width for the container */
+    max-width: 100%; /* Adjust as needed */
+    box-sizing: border-box;
+}
+
+/* Custom CSS for making the image smaller */
+.smaller-image {
+    max-width: 100px; /* Adjust the max-width to your desired size */
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container h3{
+    font-size: 1.5rem;
+    color: #000;
+    font-family: 'Fredoka', sans-serif;
+    padding-top: 5px;
+}
+
+.col-md-6 {
+    flex: 0 0 100%; /* Make each column take up full width on smaller screens */
+    max-width: 100%; /* Ensure columns don't overflow */
+    box-sizing: border-box;
+}
+
+.button-container{
+    flex: 0 0 100%; /* Make each column take up full width on smaller screens */
+    max-width: 100%; /* Ensure columns don't overflow */
+    box-sizing: border-box;
+    text-align: right; /* Align the button to the right within the container */
+    margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.col-md-6 .btn-md{
+    color: var(--bg-color);
+    background-color: var(--btn-color);
+}
+
+
+.col-md-4{
+    border-radius: var(--main-radius);
+    height: 80px;
+    border: 1px solid #43D071;
+    background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 100%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: relative;
+    display: flex;
+    padding: 10px 20px;
+}
+
+
+/* Media query for screens with a maximum width of 768px (typical for tablets) */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+    /* You can also adjust other styles for smaller screens here */
+}
+
+/* Media query for screens with a maximum width of 480px (typical for smartphones) */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 12px; /* Further reduce font size for small screens */
+    }
+    /* Adjust other styles for even smaller screens */
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (min-width: 1024px) {
+    body {
+        font-size: 18px; /* Increase font size for larger screens */
+        /* Other styles for larger screens here */
+    }
+}

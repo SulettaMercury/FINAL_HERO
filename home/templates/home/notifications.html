@@ -1,0 +1,86 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags%}
+{%block title%}
+iSmartPH | Profile Settings
+{%endblock%}
+
+{%block nav%}
+
+<li><a href="home">Dashboard</a></li>
+<li><a href="crops">My Crops</a></li>
+<!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
+
+
+{%endblock%}
+{%block content%}
+<style>
+    .center2 {
+        border-color: #095833;
+        border-width: 2px;
+        border-radius: 10px;
+        border-style: solid;
+        padding: 15px;
+    }
+
+    body {
+        overflow: hidden;
+    }
+</style>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="center2">
+            <div class="row">
+                <div class="col-md-9">
+                    <legend class="border-bottom mb-4"> Profile Info </legend> 
+                </div>
+                <div class="col-md-3">
+                    <a href="/password"><button class="btn btn-sm btn-success"> UPDATE PASSWORD </button></a>
+                </div>
+            </div>
+            <p> First Name: {{first_name}}</p>
+            <p> Last Name: {{last_name}}</p>
+            <p> Date Joined: {{date}}</p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <fieldset class="form-group">
+                    {{ u_form | crispy}}
+                </fieldset>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-success mb-3" type="submit"> UPDATE </button>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+
+
+    <div class="col-md-4"></div>
+</div>
+
+{%endblock%}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

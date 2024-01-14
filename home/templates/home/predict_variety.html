@@ -1,0 +1,7 @@
+<!-- YourAppName/templates/predict_variety.html -->
+<h2>Predict Iris Variety</h2>
+<form method="post" action="{% url 'predict_var-user' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Predict</button>
+</form>
