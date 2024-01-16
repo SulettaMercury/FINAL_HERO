@@ -8,9 +8,9 @@ iSmartPH | Dashboard
 
 {%block nav%}
 
-<li><a href="home">Dashboard</a></li>
-<li><a href="crops"  class = "active">My Crops</a></li>
-<li><a href="history">Harvest History</a></li>
+<li><a href="{% url 'home-user' %}">Dashboard</a></li>
+<li><a href="{% url 'crops-user' %}" class = "active">My Crops</a></li>
+<li><a href="{% url 'history' %}" >Harvest History</a></li>
 
 
 {%endblock%}
@@ -303,7 +303,11 @@ iSmartPH | Dashboard
             <i class='bx bx-calendar-check'></i>
             <div class="row m-sm-1">
                 <h3 style="font-size: 20px">Harvest Days Range</h3>
+                {% if harvest_days == 0 %}
+                <p> READY TO HARVEST</p>
+                {%else%}
                 <p>{{harvest_days}} day/s</p>
+                {%endif%}
             </div>
         </div>
         <div id="content4">

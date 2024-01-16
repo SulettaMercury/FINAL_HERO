@@ -1231,7 +1231,7 @@ def harvest1(request):
 def history(request):
     response = requests.get(api_url)
     if response.status_code == 200:
-        print("OK")
+        #print("OK")
         data = response.json()
     else:
         print("NA")
@@ -1242,28 +1242,136 @@ def history(request):
     first_name = current_user.first_name
     last_name = current_user.last_name
     email = current_user.email
-    
+    context = {
+        'email': email,
+        'first_name': first_name,
+        'last_name': last_name,
+    }
     # Query your IoT model to fetch data
     items = Iot.objects.filter(user=current_user)
     if not items.exists():  # Check if there are no registered IoT devices
-        no_iot_message = 'No registered IoT devices. Kindly register one first.'
+        no_iot_message = 'No registered IoT devices. Kindly register one first at the Crops page.'
         context['no_iot_message'] = no_iot_message
         
     else:
         # Fetch data from Firebase based on IoT code
         iot_code = items.first().code  # Assuming you want data for the first IoT code
-        print(iot_code)
+        #print(iot_code)
+        check_path = f"IOT/{iot_code}/CropsHarvested/"
+        check_data = database.child(check_path).get().val()
+        
+        if check_data == "" :
+            no_iot_message = 'No Harvested Crops yet'
+            context['no_iot_message'] = no_iot_message
+        else:
+            # Get the keys
+            keys_list = list(check_data.keys())
 
-    check_path = f"IOT/{iot_code}/CropsHarvested/"
-    check_data = database.child(check_path).get()
-    print(check_data)
+            # Print the keys
+            print(keys_list)
+            context['data'] = keys_list
+
     # Include the check_data in the context
+    context['items'] = items
+    
+    return render(request, 'home/history.html', context)
+
+
+@login_required
+def crop_history(request, iot, data):
+    response = requests.get(api_url)
+    if response.status_code == 200:
+        #print("OK")
+        datas = response.json()
+    else:
+        print("NA")
+        
+    current_user = request.user  # Get the current user
+    
+    # Fetch the user's first_name and last_name
+    first_name = current_user.first_name
+    last_name = current_user.last_name
+    email = current_user.email
     context = {
         'email': email,
         'first_name': first_name,
         'last_name': last_name,
-        'items': items,
-        'check_data': check_data,  # Add the check_data to the context
     }
+
+    check_path = f"IOT/{iot}/CropsHarvested/{data}/CropDetails"
+    check_data = database.child(check_path).get().val()
+    context['details'] = check_data
+    harvest = data[:10]
+    context['harvest'] = harvest
+    crop = check_data['cropName']
+    print(crop)
+    #ON OFF TABLE
+    # Fetch LastOn data
+    onPump_path = f"IOT/{iot}/CropsHarvested/{data}/WaterIrrigation/LastOn"
+    onPump_data = database.child(onPump_path).get().val()
+
+    # Fetch LastOff data
+    offPump_path = f"IOT/{iot}/CropsHarvested/{data}/WaterIrrigation/LastOff"
+    offPump_data = database.child(offPump_path).get().val()
+
+    # Convert timestamped entries to a list of tuples (date, time)
+    onPump_entries = [(date[:10], time) for date, time in onPump_data.items()]  # Extract only the date part
+    offPump_entries = [(date[:10], time) for date, time in offPump_data.items()]  # Extract only the date part
+
+    # Create a dictionary to store a list of Last Off entries by date
+    off_entries_dict = {}
+    for date, time in offPump_entries:
+        if date in off_entries_dict:
+            off_entries_dict[date].append(time)
+        else:
+            off_entries_dict[date] = [time]
+
+    # Add Last Off entries to the onPump entries
+    combined_entries = []
+    for on_date, on_time in onPump_entries:
+        off_times = off_entries_dict.get(on_date, [])
+        if off_times:
+            # Find the closest Last Off time to the Last On time
+            closest_off_time = min(off_times, key=lambda x: abs(int(x.split(":")[0]) - int(on_time.split(":")[0])))
+            combined_entries.append((on_date, on_time, on_date, closest_off_time))
+        else:
+            combined_entries.append((on_date, on_time, '', ''))
+
+    context['combined_entries'] = combined_entries
+
+
+    #PROGRESS REPORT
+
+    harvest_days_path = f'IOT/{iot}/CropsHarvested/{data}/CropDetails/harvestDays'
+    harvest_days_val = database.child(harvest_days_path).get().val()
+
+    daily_pred_path = f'IOT/{iot}/CropsHarvested/{data}/{crop}/daily_prediction'
+    daily_pred_val = database.child(daily_pred_path).get().val()
+    # Get today's date and yesterday's date
+    today_date = datetime.now().date()
+    yesterday_date = today_date - timedelta(days=1)
+
+    # Get the last recorded predictive harvest range value
+    last_recorded_harvest_range = harvest_days_val if isinstance(harvest_days_val, int) else harvest_days_val.get(yesterday_date, 'N/A')
+
+    # Update harvest_days_val based on today's prediction
+    today_prediction = daily_pred_val.get(str(today_date), 'N/A')
+    if today_prediction == 'GOOD':
+        # If the prediction is GOOD, subtract 1 from harvest_days_val
+        harvest_days_val -= 1
+    elif today_prediction == 'BAD':
+        # If the prediction is BAD, add 1 to harvest_days_val
+        harvest_days_val += 1
+
+    # Retrieve predictive harvest range values from Firebase
+    harvest_days_recs_path = f'IOT/{iot}/CropsHarvested/{data}/{crop}/harvestdays_recs'
+    harvest_days_recs_val = database.child(harvest_days_recs_path).get().val()
+    # Create a dictionary for each day's data
+    predict = [{'date': dates,
+            'prediction': prediction,
+            'days_progress': '-1 day' if prediction == 'GOOD' else '+1 day' if prediction == 'BAD' else 'No change',  # Adjust for the previous day
+            'predictive_harvest_range': harvest_days_recs_val.get(dates, 'N/A')}  # Get value from harvestdays_recs for the current date
+            for dates, prediction in daily_pred_val.items()]
     
-    return render(request, 'home/history.html', context)
+    context['data'] = predict
+    return render(request, 'home/crop_history.html', context)

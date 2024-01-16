@@ -8,11 +8,9 @@ iSmartPH | My Crops
 
 {%block nav%}
 
-    <li><a href="home">Dashboard</a></li>
-    <li><a href="crops"  class = "active">My Crops</a></li>
-    <li><a href="history">Harvest History</a></li>
-
-
+<li><a href="{% url 'home-user' %}">Dashboard</a></li>
+<li><a href="{% url 'crops-user' %}" class = "active">My Crops</a></li>
+<li><a href="{% url 'history' %}" >Harvest History</a></li>
 {%endblock%}
 {%block content%}
 

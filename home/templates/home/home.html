@@ -8,9 +8,9 @@ iSmartPH | Dashboard
 
 {%block nav%}
 
-    <li><a href="home" class = "active">Dashboard</a></li>
-    <li><a href="crops">My Crops</a></li>
-    <li><a href="history">Harvest History</a></li>
+<li><a href="{% url 'home-user' %} "class = "active">Dashboard</a></li>
+<li><a href="{% url 'crops-user' %}">My Crops</a></li>
+<li><a href="{% url 'history' %}" >Harvest History</a></li>
     
     <!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
     

@@ -10,7 +10,7 @@ iSmartPH | Dashboard
 
 <li><a href="home">Dashboard</a></li>
 <li><a href="crops">My Crops</a></li>
-<li><a href="history" class = "active">Harvest History</a></li>
+<li><a href="{% url 'history' %}" class = "active">Harvest History</a></li>
     
     <!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
     
@@ -80,6 +80,34 @@ iSmartPH | Dashboard
         fill: #2E6841;
         filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.25));
     }
+
+    .col-md-4 {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        background: linear-gradient(180deg, #43D071 0%, rgba(67, 208, 113, 0.00) 100%);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        color: #2E6841;
+        text-color: #000000;
+        font-family: 'Assistant', sans-serif;
+        font-weight: 600;
+        height: 80px;
+        width: 200px;
+        border: 1px solid #43D071;
+        border-radius: 10px;
+        text-align: center;
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        /* Vertically center content */
+        justify-content: center;
+        /* Horizontally center content */
+        text-align: center;
+        justify-content: center;
+    }
+    a {
+            color: black;
+            
+        }
 </style>
 
     <br><br><br><br>
@@ -93,13 +121,34 @@ iSmartPH | Dashboard
 
 
 
-    <br><br><br><br>
-
-    <div class="container mt-5">
-        {% for key, value in check_data.items %}
-    <p>{{ key }}: {{ value }}</p>
-{% endfor %}
+    <br>
+    <div class="row" >
+        {% if no_iot_message %}
+        <p style="text-align: center">{{ no_iot_message }}</p>
+        {% endif %}
     </div>
+    <div class="row" style="margin-left: 10%;">
+        {% for iot in items%}
+        <div class="col-md-6">
+            <H5>{{ iot }}</H5>
+        </div>
+        <div class="container mt-3" style="overflow-x: auto; overflow-y: hidden; display: flex;
+        justify-content: flex-start; width: 80%; margin-left: 5%; white-space: nowrap;"> 
+        
+           {% for data in data%}
+           <div class="col-md-4">
+            <a href="{% url 'crop_history' iot data %}" style="text-decoration: none; padding: 10px;">
+                {{ data }}
+            </a>
+           </div>
+           
+           {% endfor %}
+
+        </div>
+        {% endfor %}
+
+    </div> 
+    
     
     
     <footer>

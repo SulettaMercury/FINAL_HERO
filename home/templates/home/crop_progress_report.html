@@ -7,11 +7,9 @@ iSmartPH | Dashboard
 {%endblock%}
 
 {%block nav%}
-
 <li><a href="{% url 'home-user' %}">Dashboard</a></li>
-<li><a href="{% url 'crops-user' %}">My Crops</a></li>
-<!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
-
+<li><a href="{% url 'crops-user' %}" class = "active">My Crops</a></li>
+<li><a href="{% url 'history' %}" >Harvest History</a></li>
 
 {%endblock%}
 {%block content%}
@@ -148,8 +146,13 @@ iSmartPH | Dashboard
                             <tr>
                                 <td>{{ entry.date }}</td>
                                 <td>{{ entry.prediction }}</td>
+                                {% if entry.predictive_harvest_range == 0%}
+                                <td>N/A</td>
+                                <td>READY TO HARVEST </td>
+                                {%else%}
                                 <td>{{ entry.days_progress }}</td>
                                 <td>{{ entry.predictive_harvest_range }} days</td>
+                                {%endif%}
                             </tr>
                             {% endfor %}
                         </tbody>

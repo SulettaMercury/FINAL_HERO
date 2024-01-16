@@ -68,6 +68,7 @@ urlpatterns = [
     path('remove',home_views.remove, name='remove'),
     path('harvest1',home_views.harvest1, name='harvest1'),
     path('history',home_views.history, name='history'),
+    path('history/<iot>/<data>',home_views.crop_history, name='crop_history'),
     
     ]
     

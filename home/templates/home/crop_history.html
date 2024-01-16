@@ -1,0 +1,142 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+
+{%block title%}
+iSmartPH | Dashboard
+{%endblock%}
+
+{%block nav%}
+
+<li><a href="{% url 'home-user' %}">Dashboard</a></li>
+<li><a href="{% url 'crops-user' %}">My Crops</a></li>
+<li><a href="{% url 'history' %}" class = "active">Harvest History</a></li>
+    
+    <!--<li><a href="iot_registration">iSmartPH IoT</a></li>-->
+    
+
+{%endblock%}
+{%block content%}
+
+
+<style>
+
+
+table, th, td {
+    text-align: center;
+}
+body{
+    overflow: hidden;
+}
+</style>
+
+    <br><br><br><br>
+
+    <div class="container mt-5">
+        <div class="head-title">
+            <br><br>
+            <h4>Crop Harvest History</h4>
+        </div>
+    </div>
+
+    <br>
+    
+    <div class="row" style="margin-left: 10%; border: 2px solid black;
+    padding: 4px; width: 83.5%; border-radius: 15px;  ">
+       <div class="col-md-12">
+            <H5>{{details.cropName}}</H5>
+            <br>
+            <div class="row" style="margin-left: 2%;">
+                <div class="col-md-6">
+                    <p>DATE REGISTERED: {{details.dateRegistered}} </p>
+                </div>
+                
+                <div class="col-md-6">
+                    <p>DATE HARVESTED: {{harvest}} </p>
+                </div>
+            </div>
+            <div class="row" style="margin-left: 2%;">
+                <div class="col-md-6">
+                    <p>SOIL TYPE: {{details.typeOfUsedSoil}} </p>
+                </div>
+            </div>
+       </div>
+    </div> 
+
+    <br>
+    <div class="row" style="margin-left: 10%;">
+        <div class="col-md-6"  style=" border: 2px solid black;
+        width: 45%; border-radius: 15px; overflow: auto; margin: 5px;font-size: 12px; padding:5px; max-height: 300px;">
+            
+            <table class="table table-striped" id="max">
+                <thead>
+                    <tr>
+                        <th>Last On Date</th>
+                        <th>Last On Time</th>
+                        <th>Last Off Date</th>
+                        <th>Last Off Time</th>
+                    </tr>
+                </thead>
+                <tbody >  
+                    {% for on_date, on_time, off_date, off_time in combined_entries %}
+                        <tr>
+                            <td>{{ on_date }}</td>
+                            <td>{{ on_time }}</td>
+                            <td>{{ off_date }}</td>
+                            <td>{{ off_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+        </div>
+        <div class="col-md-6" style=" border: 2px solid black;
+          width: 45%; border-radius: 15px;margin: 5px; white-space: nowrap;
+            overflow: auto; /* Optional: hide overflowing content */
+            text-overflow: ellipsis; font-size: 12px; padding:5px;" >
+            <table class="table table-striped" id="max">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Crop Growth Health Condition</th>
+                        <th>Days Progress</th>
+                        <th>Predictive Harvest Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in data %}
+                    <tr>
+                        <td>{{ entry.date }}</td>
+                        <td>{{ entry.prediction }}</td>
+                        <td>{{ entry.days_progress }}</td>
+                        <td>{{ entry.predictive_harvest_range }} days</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+        </div>
+    </div>
+    
+    
+    
+    <footer>
+        <h1><br></h1>
+    </footer>
+    
+
+
+
+
+
+
+
+
+
+
+    {%endblock%}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
